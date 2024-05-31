@@ -32,12 +32,13 @@ __all__ = (
 
 
 class RiotAuth:
-    RIOT_CLIENT_USER_AGENT = token_urlsafe(111)
+    RIOT_CLIENT_USER_AGENT = "RiotClient/87.0.2.1547.3551 %s (Windows;10;;Professional, x64)"
     CIPHERS13 = ":".join(  # https://docs.python.org/3/library/ssl.html#tls-1-3
         (
-            "TLS_CHACHA20_POLY1305_SHA256",
-            "TLS_AES_128_GCM_SHA256",
-            "TLS_AES_256_GCM_SHA384",
+            'TLS_CHACHA20_POLY1305_SHA256',
+            'TLS_AES_128_GCM_SHA256',
+            'TLS_AES_256_GCM_SHA384',     
+            'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256'
         )
     )
     CIPHERS = ":".join(
@@ -61,15 +62,15 @@ class RiotAuth:
     )
     SIGALGS = ":".join(
         (
-            "ecdsa_secp256r1_sha256",
-            "rsa_pss_rsae_sha256",
-            "rsa_pkcs1_sha256",
-            "ecdsa_secp384r1_sha384",
-            "rsa_pss_rsae_sha384",
-            "rsa_pkcs1_sha384",
-            "rsa_pss_rsae_sha512",
-            "rsa_pkcs1_sha512",
-            "rsa_pkcs1_sha1",  # will get ignored and won't be negotiated
+            'ecdsa_secp256r1_sha256',
+            'rsa_pss_rsae_sha256',
+            'rsa_pkcs1_sha256',
+            'ecdsa_secp384r1_sha384',
+            'rsa_pss_rsae_sha384',
+            'rsa_pkcs1_sha384',
+            'rsa_pss_rsae_sha512',
+            'rsa_pkcs1_sha512',
+            'rsa_pkcs1_sha1',
         )
     )
 
