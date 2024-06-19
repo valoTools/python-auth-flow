@@ -77,6 +77,7 @@ class RiotAuth:
     def __init__(self) -> None:
         self._auth_ssl_ctx = RiotAuth.create_riot_auth_ssl_ctx()
         self._cookie_jar = aiohttp.CookieJar()
+        self._raw_cookies: Optional[Dict] = None
         self.access_token: Optional[str] = None
         self.scope: Optional[str] = None
         self.id_token: Optional[str] = None
@@ -202,7 +203,7 @@ class RiotAuth:
                     )
 
         self._cookie_jar = session.cookie_jar
-
+        self._raw_cookies = {cookie.key: cookie.value for cookie in self._cookie_jar}
         if not multifactor_status:
             self.__set_tokens_from_uri(data)
             await self.__fetch_entitlements_token(session)
@@ -215,7 +216,8 @@ class RiotAuth:
             # "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT % "entitlements",
             "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT,
             "Cache-Control": "no-cache",
-            "Accept": "application/json",
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "en-US,en;q=0.9",
             "Authorization": f"{self.token_type} {self.access_token}",
         }
 
@@ -245,7 +247,8 @@ class RiotAuth:
                 # "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT % "rso-auth",
                 "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT,
                 "Cache-Control": "no-cache",
-                "Accept": "application/json",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "en-US,en;q=0.9"
             }
 
             # region Begin auth/Reauth
@@ -294,6 +297,8 @@ class RiotAuth:
                 "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT,
                 "Cache-Control": "no-cache",
                 "Accept": "application/json",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "en-US,en;q=0.9"
             }
             body = {
                 "type": "multifactor",
