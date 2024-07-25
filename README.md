@@ -27,7 +27,7 @@ riot-auth --help
 ```
 2. Getting Account tokens
 ```bash
-riot-auth authorize <USERNAME> <PASSWORD> 
+riot-auth authorize
 ```
 
 ## Installation
