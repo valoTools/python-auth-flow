@@ -32,13 +32,12 @@ __all__ = (
 
 
 class RiotAuth:
-    RIOT_CLIENT_USER_AGENT = "RiotClient/87.0.2.1547.3551 %s (Windows;10;;Professional, x64)"
+    RIOT_CLIENT_USER_AGENT = token_urlsafe(111)
     CIPHERS13 = ":".join(  # https://docs.python.org/3/library/ssl.html#tls-1-3
         (
-            'TLS_CHACHA20_POLY1305_SHA256',
-            'TLS_AES_128_GCM_SHA256',
-            'TLS_AES_256_GCM_SHA384',     
-            'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256'
+            "TLS_CHACHA20_POLY1305_SHA256",
+            "TLS_AES_128_GCM_SHA256",
+            "TLS_AES_256_GCM_SHA384",
         )
     )
     CIPHERS = ":".join(
@@ -62,22 +61,21 @@ class RiotAuth:
     )
     SIGALGS = ":".join(
         (
-            'ecdsa_secp256r1_sha256',
-            'rsa_pss_rsae_sha256',
-            'rsa_pkcs1_sha256',
-            'ecdsa_secp384r1_sha384',
-            'rsa_pss_rsae_sha384',
-            'rsa_pkcs1_sha384',
-            'rsa_pss_rsae_sha512',
-            'rsa_pkcs1_sha512',
-            'rsa_pkcs1_sha1',
+            "ecdsa_secp256r1_sha256",
+            "rsa_pss_rsae_sha256",
+            "rsa_pkcs1_sha256",
+            "ecdsa_secp384r1_sha384",
+            "rsa_pss_rsae_sha384",
+            "rsa_pkcs1_sha384",
+            "rsa_pss_rsae_sha512",
+            "rsa_pkcs1_sha512",
+            "rsa_pkcs1_sha1",  # will get ignored and won't be negotiated
         )
     )
 
     def __init__(self) -> None:
         self._auth_ssl_ctx = RiotAuth.create_riot_auth_ssl_ctx()
         self._cookie_jar = aiohttp.CookieJar()
-        self._raw_cookies: Optional[Dict] = None
         self.access_token: Optional[str] = None
         self.scope: Optional[str] = None
         self.id_token: Optional[str] = None
@@ -212,7 +210,7 @@ class RiotAuth:
                     )
 
         self._cookie_jar = session.cookie_jar
-        self._raw_cookies = {cookie.key: cookie.value for cookie in self._cookie_jar}
+        
         if not multifactor_status:
             self.__set_tokens_from_uri(data)
             await self.__fetch_entitlements_token(session)
@@ -225,8 +223,7 @@ class RiotAuth:
             # "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT % "entitlements",
             "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT,
             "Cache-Control": "no-cache",
-            "Accept": "application/json, text/plain, */*",
-            "Accept-Language": "en-US,en;q=0.9",
+            "Accept": "application/json",
             "Authorization": f"{self.token_type} {self.access_token}",
         }
 
@@ -256,8 +253,7 @@ class RiotAuth:
                 # "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT % "rso-auth",
                 "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT,
                 "Cache-Control": "no-cache",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "en-US,en;q=0.9"
+                "Accept": "application/json",
             }
 
             # region Begin auth/Reauth
@@ -306,8 +302,6 @@ class RiotAuth:
                 "user-agent": RiotAuth.RIOT_CLIENT_USER_AGENT,
                 "Cache-Control": "no-cache",
                 "Accept": "application/json",
-                "Accept": "application/json, text/plain, */*",
-                "Accept-Language": "en-US,en;q=0.9"
             }
             body = {
                 "type": "multifactor",
