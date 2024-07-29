@@ -210,7 +210,7 @@ class RiotAuth:
                     )
 
         self._cookie_jar = session.cookie_jar
-        
+
         if not multifactor_status:
             self.__set_tokens_from_uri(data)
             await self.__fetch_entitlements_token(session)
