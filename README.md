@@ -20,6 +20,16 @@ With this you can create a task/simple function that updates the `RIOT_CLIENT_US
 
 > I will soon create a pipeline to update the user-agent automatically, currently they are up to date
 
+### CLI commands
+1. Use help command to get all the commands available
+```bash
+riot-auth --help
+```
+2. Getting Account tokens
+```bash
+riot-auth authorize
+```
+
 ## Installation
  - `$ pip install git+https://github.com/typhonshambo/python-riot-auth.git`
 
